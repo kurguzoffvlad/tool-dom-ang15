@@ -8,10 +8,7 @@ import { ToolDomAng15Component } from './tool-dom-ang15.component';
   declarations: [
     ToolDomAng15Component
   ],
-  imports: [
-  ],
-  exports: [
-    ToolDomAng15Component
-  ]
+  imports: [CommonModule],
+  exports: [ToolDomAng15Component]
 })
 export class ToolDomAng15Module { }

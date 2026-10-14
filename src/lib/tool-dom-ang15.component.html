@@ -84,9 +84,9 @@
     <aside class="playground__log">
       <h2>Лог операций</h2>
       <ul>
-        <li *ngFor="let item of log">{{ item }}</li>
+        <li *ngFor="let item of logHtml">{{ item }}</li>
       </ul>
-      <p *ngIf="!log.length" class="empty">Пока пусто — жми кнопки слева.</p>
+      <p *ngIf="!logHtml.length" class="empty">Пока пусто — жми кнопки слева.</p>
     </aside>
 
   </main>

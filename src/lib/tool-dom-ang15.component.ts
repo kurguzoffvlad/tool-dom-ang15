@@ -29,7 +29,7 @@ export class ToolDomAng15Component  implements OnInit, AfterViewInit {
   @ViewChild('dynamicHost', { static: true }) dynamicHostRef!: ElementRef<HTMLElement>;
 
   /** Лог операций */
-  public log: string[] = [];
+  public logHtml: string[] = [];
 
   /** Публичные экземпляры сервисов */
   public dom!: DomElement;
@@ -287,15 +287,17 @@ export class ToolDomAng15Component  implements OnInit, AfterViewInit {
 
   /** Очистить лог */
   clearLog(): void {
-    this.log = [];
+    this.logHtml = [];
   }
 
   /** Внутреннее логирование */
   private _log(message: string): void {
     const time = new Date().toLocaleTimeString();
-    this.log.unshift(`[${time}] ${message}`);
-    if (this.log.length > 200) { this.log.length = 200; }
-    // eslint-disable-next-line no-console
-    console.log(message);
+
+    this.logHtml.unshift(`[${time}] ${message}`);
+
+    if (this.logHtml.length > 200) { this.logHtml.length = 200; }
+      // eslint-disable-next-line no-console
+      console.log(message);
   }
 }
