@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { ToolDomAng15Component } from './tool-dom-ang15.component';
 
 
