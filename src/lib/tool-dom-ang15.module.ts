@@ -4,9 +4,7 @@ import {ToolDomAng15Component} from './tool-dom-ang15.component';
 
 
 @NgModule({
-    declarations: [
-        ToolDomAng15Component
-    ],
+    declarations: [ToolDomAng15Component],
     imports: [CommonModule],
     exports: [ToolDomAng15Component]
 })
