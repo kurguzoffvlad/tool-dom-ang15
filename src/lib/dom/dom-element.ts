@@ -68,7 +68,7 @@ export class DomElement {
         strInnerHTML: string = '',
         dataId: number | string = '',
         eventName: TAllEvents,
-        fn = null
+        fn: ((event: Event, ...args: any[]) => void) | null = null
     ): void {
         if (!parentElement || !newElement) {
             return;

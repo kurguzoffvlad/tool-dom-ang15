@@ -12,6 +12,8 @@ import { DomClass } from './dom/dom-class';
 import { DomElement } from './dom/dom-element';
 import { DomStyle } from './dom/dom-style';
 
+import { green } from 'tool-log'
+
 @Component({
   selector: 'lib-tool-dom-ang15',
   templateUrl: './tool-dom-ang15.component.html',
@@ -75,6 +77,7 @@ export class ToolDomAng15Component  implements OnInit, AfterViewInit {
       `Кнопка #${++this._createdCounter} — кликни меня`,
       `btn-${this._createdCounter}`,
       'click',
+      ()=> green('demoElementCreate')
     );
     this._log('elementCreate → <button> c обработчиком click');
   }
