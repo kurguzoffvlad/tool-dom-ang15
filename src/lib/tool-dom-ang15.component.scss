@@ -179,28 +179,26 @@
 }
 
 // Демонстрационные классы
-::ng-deep {
-    .demo-active {
-        outline: 3px solid #22c55e;
-    }
+.demo-active {
+    outline: 3px solid #22c55e;
+}
 
-    .demo-toggled {
-        box-shadow: 0 0 0 3px #f59e0b inset;
-    }
+.demo-toggled {
+    box-shadow: 0 0 0 3px #f59e0b inset;
+}
 
-    .demo-forced {
-        text-decoration: underline wavy #ef4444;
-    }
+.demo-forced {
+    text-decoration: underline wavy #ef4444;
+}
 
-    .demo-a {
-        background: #ecfdf5 !important;
-    }
+.demo-a {
+    background: #ecfdf5 !important;
+}
 
-    .demo-b {
-        border-color: #10b981 !important;
-    }
+.demo-b {
+    border-color: #10b981 !important;
+}
 
-    .demo-c {
-        color: #065f46 !important;
-    }
+.demo-c {
+    color: #065f46 !important;
 }
