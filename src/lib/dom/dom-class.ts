@@ -1,6 +1,6 @@
-import { ElementRef, Inject } from '@angular/core';
-import { DOCUMENT } from "@angular/common";
-import { DomElement } from "./dom-element";
+import {ElementRef, Inject} from '@angular/core';
+import {DOCUMENT} from "@angular/common";
+import {DomElement} from "./dom-element";
 
 /**
  * Класс для работы с классами DOM
@@ -9,9 +9,9 @@ export class DomClass {
     public dom: DomElement;
 
     constructor(
-      @Inject(DOCUMENT) public document: Document,
+        @Inject(DOCUMENT) public document: Document,
     ) {
-      this.dom = new DomElement(this.document)
+        this.dom = new DomElement(this.document)
     }
 
     //region Управление классами
@@ -52,7 +52,9 @@ export class DomClass {
      * @param classNames - Массив названий CSS-классов для добавления
      */
     addClasses(element: HTMLElement | null, classNames: string[]): void {
-        if (!element || !classNames || classNames.length === 0) { return; }
+        if (!element || !classNames || classNames.length === 0) {
+            return;
+        }
 
         classNames.forEach(className => {
             if (className && className.trim() !== '') {
@@ -70,7 +72,7 @@ export class DomClass {
      *
      */
     addClassMarginPadding(elementRef: ElementRef<HTMLElement>, arrVars: number[] = []): void {
-        const root= this.dom.elementGetParent(elementRef.nativeElement);
+        const root = this.dom.elementGetParent(elementRef.nativeElement);
 
         if (!root) {
             console.error('Root element not found');
@@ -141,7 +143,9 @@ export class DomClass {
      * @param force - Принудительно установить или удалить класс (true - добавить, false - удалить)
      */
     toggleClass(element: HTMLElement | null, className: string, force?: boolean): void {
-        if (!element || !className) { return; }
+        if (!element || !className) {
+            return;
+        }
 
         const trimmedClassName = className.trim();
 
@@ -201,11 +205,16 @@ export class DomClass {
      */
     private _getCssDirection(dir: string): string {
         switch (dir) {
-            case 't': return 'top';
-            case 'r': return 'right';
-            case 'b': return 'bottom';
-            case 'l': return 'left';
-            default: return '';
+            case 't':
+                return 'top';
+            case 'r':
+                return 'right';
+            case 'b':
+                return 'bottom';
+            case 'l':
+                return 'left';
+            default:
+                return '';
         }
     }
 

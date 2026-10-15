@@ -7,7 +7,9 @@ export class DomStyle {
 
 
     applyStyleProperty(element: HTMLElement | null, property: string, value: string): void {
-        if (!element || !property || !value) { return; }
+        if (!element || !property || !value) {
+            return;
+        }
 
         const trimmedProperty = property.trim();
 
@@ -16,7 +18,9 @@ export class DomStyle {
     }
 
     removeStyle(element: HTMLElement | null, property: string): void {
-        if (!element || !property) { return; }
+        if (!element || !property) {
+            return;
+        }
 
         const trimmedProperty = property.trim();
 
@@ -25,7 +29,9 @@ export class DomStyle {
     }
 
     getStyle(element: HTMLElement | null, property: string): string | null {
-        if (!element || !property) { return null; }
+        if (!element || !property) {
+            return null;
+        }
 
         const trimmedProperty = property.trim();
 

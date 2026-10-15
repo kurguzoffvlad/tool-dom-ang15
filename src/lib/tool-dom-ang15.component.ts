@@ -1,306 +1,312 @@
 import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
+    Component,
+    ElementRef,
+    Inject,
+    OnInit,
+    ViewChild,
+    AfterViewInit,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 
-import { DomClass } from './dom/dom-class';
-import { DomElement } from './dom/dom-element';
-import { DomStyle } from './dom/dom-style';
+import {DomClass} from './dom/dom-class';
+import {DomElement} from './dom/dom-element';
+import {DomStyle} from './dom/dom-style';
 
-import { green } from 'tool-log'
+import {green} from 'tool-log'
 
 @Component({
-  selector: 'lib-tool-dom-ang15',
-  templateUrl: './tool-dom-ang15.component.html',
-  styleUrls: ['./tool-dom-ang15.component.scss'],
+    selector: 'lib-tool-dom-ang15',
+    templateUrl: './tool-dom-ang15.component.html',
+    styleUrls: ['./tool-dom-ang15.component.scss'],
 })
-export class ToolDomAng15Component  implements OnInit, AfterViewInit {
+export class ToolDomAng15Component implements OnInit, AfterViewInit {
 
-  /** Ссылка на контейнер-песочницу (корень для addClassMarginPadding) */
-  @ViewChild('sandbox', { static: true }) sandboxRef!: ElementRef<HTMLElement>;
+    /** Ссылка на контейнер-песочницу (корень для addClassMarginPadding) */
+    @ViewChild('sandbox', {static: true}) sandboxRef!: ElementRef<HTMLElement>;
 
-  /** Ссылка на целевой элемент для манипуляций классами/стилями */
-  @ViewChild('target', { static: true }) targetRef!: ElementRef<HTMLElement>;
+    /** Ссылка на целевой элемент для манипуляций классами/стилями */
+    @ViewChild('target', {static: true}) targetRef!: ElementRef<HTMLElement>;
 
-  /** Ссылка на контейнер для динамически создаваемых элементов */
-  @ViewChild('dynamicHost', { static: true }) dynamicHostRef!: ElementRef<HTMLElement>;
+    /** Ссылка на контейнер для динамически создаваемых элементов */
+    @ViewChild('dynamicHost', {static: true}) dynamicHostRef!: ElementRef<HTMLElement>;
 
-  /** Лог операций */
-  public logHtml: string[] = [];
+    /** Лог операций */
+    public logHtml: string[] = [];
 
-  /** Публичные экземпляры сервисов */
-  public dom!: DomElement;
-  public cls!: DomClass;
-  public style!: DomStyle;
+    /** Публичные экземпляры сервисов */
+    public dom!: DomElement;
+    public cls!: DomClass;
+    public style!: DomStyle;
 
-  /** Счётчик созданных элементов */
-  private _createdCounter = 0;
+    /** Счётчик созданных элементов */
+    private _createdCounter = 0;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
-
-  ngOnInit(): void {
-    // Инициализация — DomClass зависит от DomElement
-    this.dom = new DomElement(this.document);
-    this.cls = new DomClass(this.document);
-    this.style = new DomStyle();
-
-    this._log('✅ ToolDomComponent: сервисы инициализированы');
-  }
-
-  ngAfterViewInit(): void {
-    this._log('✅ ToolDomComponent: view инициализирован, DOM доступен');
-  }
-
-  // ============================================================
-  // DOM ELEMENT — демонстрации
-  // ============================================================
-
-  /** createElement */
-  demoCreateElement(): void {
-    const el = this.dom.createElement('div', 'created-box');
-    el.textContent = `createElement #${++this._createdCounter}`;
-    this.dynamicHostRef.nativeElement.appendChild(el);
-    this._log(`createElement → <div class="created-box">`);
-  }
-
-  /** elementCreate (создание + вставка + событие) */
-  demoElementCreate(): void {
-    this.dom.elementCreate(
-      this.dynamicHostRef.nativeElement,
-      'button',
-      'appendChild',
-      `Кнопка #${++this._createdCounter} — кликни меня`,
-      `btn-${this._createdCounter}`,
-      'click',
-      ()=> green('demoElementCreate')
-    );
-    this._log('elementCreate → <button> c обработчиком click');
-  }
-
-  /** elementAdd (вставка существующего) */
-  demoElementAdd(): void {
-    const el = this.dom.createElement('span', 'added-span');
-    el.textContent = ` insertBefore #${++this._createdCounter} `;
-
-    this.dom.elementAdd(
-      this.dynamicHostRef.nativeElement,
-      'insertBefore',
-      'span-x',
-      'mouseenter',
-      () => this._log('🖱 mouseenter на вставленном <span>'),
-      el
-    );
-    this._log('elementAdd → insertBefore <span>');
-  }
-
-  /** elementRemove */
-  demoElementRemove(): void {
-    const host = this.dynamicHostRef.nativeElement;
-    const last = host.lastElementChild as HTMLElement;
-    if (last) {
-      this.dom.elementRemove(host, last);
-      this._log(`elementRemove → удалён <${last.tagName.toLowerCase()}>`);
-    } else {
-      this._log('elementRemove → нечего удалять');
+    constructor(@Inject(DOCUMENT) private document: Document) {
     }
-  }
 
-  /** elementGet (асинхронный поиск с повторными попытками) */
-  async demoElementGet(): Promise<void> {
-    this._log('elementGet → ждём появления .appears-later ...');
+    ngOnInit(): void {
+        // Инициализация — DomClass зависит от DomElement
+        this.dom = new DomElement(this.document);
+        this.cls = new DomClass(this.document);
+        this.style = new DomStyle();
 
-    // Создадим элемент через 1 секунду
-    setTimeout(() => {
-      const el = this.dom.createElement('div', 'appears-later');
-      el.textContent = 'Я появился позже!';
-      this.dynamicHostRef.nativeElement.appendChild(el);
-    }, 1000);
-
-    const found = await this.dom.elementGet('.appears-later');
-    this._log(`elementGet → найден: "${found?.textContent ?? 'null'}"`);
-  }
-
-  /** getElementByDataAttribute */
-  demoGetByDataAttr(): void {
-    const all = this.dom.getElementByDataAttribute('data-id');
-    this._log(`getElementByDataAttribute('data-id') → найдено: ${all.length}`);
-
-    if (all.length) {
-      const first = this.dom.getElementByDataAttribute('data-id', all[0].dataset['id']!);
-      this._log(`getElementByDataAttribute('data-id', '${all[0].dataset['id']}') → найдено: ${first.length}`);
+        this._log('✅ ToolDomComponent: сервисы инициализированы');
     }
-  }
 
-  /** getCoordinates */
-  demoGetCoordinates(): void {
-    const rect = this.dom.getCoordinates(this.targetRef.nativeElement);
-    this._log(
-      `getCoordinates → top=${rect.top.toFixed(1)}, left=${rect.left.toFixed(1)}, ` +
-      `w=${rect.width.toFixed(1)}, h=${rect.height.toFixed(1)}`
-    );
-  }
+    ngAfterViewInit(): void {
+        this._log('✅ ToolDomComponent: view инициализирован, DOM доступен');
 
-  /** elementGetParent */
-  demoGetParent(): void {
-    const parent = this.dom.elementGetParent(this.targetRef.nativeElement);
-    this._log(
-      `elementGetParent → <${parent && 'tagName' in parent ? (parent as HTMLElement).tagName.toLowerCase() : 'null'}>`
-    );
-  }
+    }
 
-  /** elementsGetSiblingAll */
-  demoSiblingsAll(): void {
-    const all = this.dom.elementsGetSiblingAll(this.targetRef.nativeElement);
-    this._log(`elementsGetSiblingAll → ${all.length} элемент(ов): ${all.map(e => e.tagName.toLowerCase()).join(', ')}`);
-  }
+    // ============================================================
+    // DOM ELEMENT — демонстрации
+    // ============================================================
 
-  /** elementGetSiblingNext */
-  demoSiblingsNext(): void {
-    const next = this.dom.elementGetSiblingNext(this.targetRef.nativeElement);
-    this._log(`elementGetSiblingNext → ${next.length} элемент(ов)`);
-  }
+    /** createElement */
+    demoCreateElement(): void {
+        const el = this.dom.createElement('div', 'created-box');
+        el.textContent = `createElement #${++this._createdCounter}`;
+        this.dynamicHostRef.nativeElement.appendChild(el);
+        this._log(`createElement → <div class="created-box">`);
+    }
 
-  /** elementGetSiblingPrevious */
-  demoSiblingsPrevious(): void {
-    const prev = this.dom.elementGetSiblingPrevious(this.targetRef.nativeElement);
-    this._log(`elementGetSiblingPrevious → ${prev.length} узел(ов) (включая текстовые)`);
-  }
+    /** elementCreate (создание + вставка + событие) */
+    demoElementCreate(): void {
+        this.dom.elementCreate(
+            this.dynamicHostRef.nativeElement,
+            'button',
+            'appendChild',
+            `Кнопка #${++this._createdCounter} — кликни меня`,
+            `btn-${this._createdCounter}`,
+            'click',
+            () => green('demoElementCreate')
+        );
+        this._log('elementCreate → <button> c обработчиком click');
+    }
 
-  /** elementGetChildren */
-  demoGetChildren(): void {
-    const kids = this.dom.elementGetChildren(this.dynamicHostRef.nativeElement);
-    this._log(`elementGetChildren → ${kids.length} дочерних элемент(ов)`);
-  }
+    /** elementAdd (вставка существующего) */
+    demoElementAdd(): void {
+        const el = this.dom.createElement('span', 'added-span');
+        el.textContent = ` insertBefore #${++this._createdCounter} `;
 
-  // ============================================================
-  // DOM CLASS — демонстрации
-  // ============================================================
+        this.dom.elementAdd(
+            this.dynamicHostRef.nativeElement,
+            'insertBefore',
+            'span-x',
+            'mouseenter',
+            () => this._log('🖱 mouseenter на вставленном <span>'),
+            el
+        );
+        this._log('elementAdd → insertBefore <span>');
+    }
 
-  /** hasClass */
-  demoHasClass(): void {
-    const has = this.cls.hasClass(this.targetRef.nativeElement, 'demo-active');
-    this._log(`hasClass('demo-active') → ${has}`);
-  }
+    /** elementRemove */
+    demoElementRemove(): void {
+        const host = this.dynamicHostRef.nativeElement;
+        const last = host.lastElementChild as HTMLElement;
+        if (last) {
+            this.dom.elementRemove(host, last);
+            this._log(`elementRemove → удалён <${last.tagName.toLowerCase()}>`);
+        } else {
+            this._log('elementRemove → нечего удалять');
+        }
+    }
 
-  /** addClass */
-  demoAddClass(): void {
-    const ok = this.cls.addClass(this.targetRef.nativeElement, 'demo-active');
-    this._log(`addClass('demo-active') → ${ok}`);
-  }
+    /** elementGet (асинхронный поиск с повторными попытками) */
+    async demoElementGet(): Promise<void> {
+        this._log('elementGet → ждём появления .appears-later ...');
 
-  /** addClasses (массово) */
-  demoAddClasses(): void {
-    this.cls.addClasses(this.targetRef.nativeElement, ['demo-a', 'demo-b', 'demo-c']);
-    this._log('addClasses([demo-a, demo-b, demo-c]) → добавлены');
-  }
+        // Создадим элемент через 1 секунду
+        setTimeout(() => {
+            const el = this.dom.createElement('div', 'appears-later');
+            el.textContent = 'Я появился позже!';
+            this.dynamicHostRef.nativeElement.appendChild(el);
+        }, 1000);
 
-  /** addClassMarginPadding — генерация утилит отступов */
-  demoAddClassMarginPadding(): void {
-    // Генерируем классы для значений 1..5 (соответствуют var(--evo1..5))
-    this.cls.addClassMarginPadding(this.sandboxRef, [1, 2, 3, 4, 5]);
+        const found = await this.dom.elementGet('.appears-later');
+        this._log(`elementGet → найден: "${found?.textContent ?? 'null'}"`);
+    }
 
-    // Применим один из сгенерированных классов
-    this.cls.addClass(this.targetRef.nativeElement, 'evo-mt-2');
-    this.cls.addClass(this.targetRef.nativeElement, 'evo-pl-3');
+    /** getElementByDataAttribute */
+    demoGetByDataAttr(): void {
+        const all = this.dom.getElementByDataAttribute('data-id');
+        this._log(`getElementByDataAttribute('data-id') → найдено: ${all.length}`);
 
-    this._log('addClassMarginPadding → сгенерированы .evo-{m|p}{t|r|b|l}-{1..5}, применены evo-mt-2, evo-pl-3');
-  }
+        if (all.length) {
+            const first = this.dom.getElementByDataAttribute('data-id', all[0].dataset['id']!);
+            this._log(`getElementByDataAttribute('data-id', '${all[0].dataset['id']}') → найдено: ${first.length}`);
+        }
+    }
 
-  /** deleteClassMarginPadding */
-  demoDeleteClassMarginPadding(): void {
-    this.cls.deleteClassMarginPadding();
-    this._log('deleteClassMarginPadding → <style data-dynamic-style> удалён');
-  }
+    /** getCoordinates */
+    demoGetCoordinates(): void {
+        const rect = this.dom.getCoordinates(this.targetRef.nativeElement);
+        this._log(
+            `getCoordinates → top=${rect.top.toFixed(1)}, left=${rect.left.toFixed(1)}, ` +
+            `w=${rect.width.toFixed(1)}, h=${rect.height.toFixed(1)}`
+        );
+    }
 
-  /** removeClass */
-  demoRemoveClass(): void {
-    const ok = this.cls.removeClass(this.targetRef.nativeElement, 'demo-active');
-    this._log(`removeClass('demo-active') → ${ok}`);
-  }
+    /** elementGetParent */
+    demoGetParent(): void {
+        const parent = this.dom.elementGetParent(this.targetRef.nativeElement);
+        this._log(
+            `elementGetParent → <${parent && 'tagName' in parent ? (parent as HTMLElement).tagName.toLowerCase() : 'null'}>`
+        );
+    }
 
-  /** toggleClass */
-  demoToggleClass(): void {
-    this.cls.toggleClass(this.targetRef.nativeElement, 'demo-toggled');
-    this._log(`toggleClass('demo-toggled') → сейчас: ${this.cls.hasClass(this.targetRef.nativeElement, 'demo-toggled')}`);
-  }
+    /** elementsGetSiblingAll */
+    demoSiblingsAll(): void {
+        const all = this.dom.elementsGetSiblingAll(this.targetRef.nativeElement);
+        this._log(`elementsGetSiblingAll → ${all.length} элемент(ов): ${all.map(e => e.tagName.toLowerCase()).join(', ')}`);
+    }
 
-  /** toggleClass с force */
-  demoToggleForce(): void {
-    this.cls.toggleClass(this.targetRef.nativeElement, 'demo-forced', true);
-    this._log("toggleClass('demo-forced', true) → принудительно добавлен");
-  }
+    /** elementGetSiblingNext */
+    demoSiblingsNext(): void {
+        const next = this.dom.elementGetSiblingNext(this.targetRef.nativeElement);
+        this._log(`elementGetSiblingNext → ${next.length} элемент(ов)`);
+    }
 
-  /** getClasses */
-  demoGetClasses(): void {
-    const list = this.cls.getClasses(this.targetRef.nativeElement);
-    this._log(`getClasses → [${list.join(', ')}]`);
-  }
+    /** elementGetSiblingPrevious */
+    demoSiblingsPrevious(): void {
+        const prev = this.dom.elementGetSiblingPrevious(this.targetRef.nativeElement);
+        this._log(`elementGetSiblingPrevious → ${prev.length} узел(ов) (включая текстовые)`);
+    }
 
-  /** clearClasses */
-  demoClearClasses(): void {
-    this.cls.clearClasses(this.targetRef.nativeElement);
-    this._log('clearClasses → все классы удалены');
-  }
+    /** elementGetChildren */
+    demoGetChildren(): void {
+        const kids = this.dom.elementGetChildren(this.dynamicHostRef.nativeElement);
+        this._log(`elementGetChildren → ${kids.length} дочерних элемент(ов)`);
+    }
 
-  // ============================================================
-  // DOM STYLE — демонстрации
-  // ============================================================
+    // ============================================================
+    // DOM CLASS — демонстрации
+    // ============================================================
 
-  /** applyStyleProperty */
-  demoApplyStyle(): void {
-    this.style.applyStyleProperty(this.targetRef.nativeElement, 'background-color', '#ffe08a');
-    this.style.applyStyleProperty(this.targetRef.nativeElement, 'border', '2px dashed #d97706');
-    this._log("applyStyleProperty → 'background-color', 'border'");
-  }
+    /** hasClass */
+    demoHasClass(): void {
+        const has = this.cls.hasClass(this.targetRef.nativeElement, 'demo-active');
+        this._log(`hasClass('demo-active') → ${has}`);
+    }
 
-  /** getStyle */
-  demoGetStyle(): void {
-    const bg = this.style.getStyle(this.targetRef.nativeElement, 'background-color');
-    this._log(`getStyle('background-color') → "${bg ?? 'null'}"`);
-  }
+    /** addClass */
+    demoAddClass(): void {
+        const ok = this.cls.addClass(this.targetRef.nativeElement, 'demo-active');
+        this._log(`addClass('demo-active') → ${ok}`);
+    }
 
-  /** removeStyle */
-  demoRemoveStyle(): void {
-    this.style.removeStyle(this.targetRef.nativeElement, 'background-color');
-    this._log("removeStyle('background-color') → удалён");
-  }
+    /** addClasses (массово) */
+    demoAddClasses(): void {
+        this.cls.addClasses(this.targetRef.nativeElement, ['demo-a', 'demo-b', 'demo-c']);
+        this._log('addClasses([demo-a, demo-b, demo-c]) → добавлены');
+    }
 
-  // ============================================================
-  // Сброс / утилиты
-  // ============================================================
+    /** addClassMarginPadding — генерация утилит отступов */
+    demoAddClassMarginPadding(): void {
+        // Генерируем классы для значений 1..5 (соответствуют var(--evo1..5))
+        this.cls.addClassMarginPadding(this.sandboxRef, [1, 2, 3, 4, 5]);
 
-  /** Полный сброс состояния песочницы */
-  resetAll(): void {
-    this.cls.clearClasses(this.targetRef.nativeElement);
-    this.targetRef.nativeElement.removeAttribute('style');
+        // Применим один из сгенерированных классов
+        this.cls.addClass(this.targetRef.nativeElement, 'evo-mt-2');
+        this.cls.addClass(this.targetRef.nativeElement, 'evo-pl-3');
 
-    const host = this.dynamicHostRef.nativeElement;
-    while (host.firstChild) { host.removeChild(host.firstChild); }
+        this._log('addClassMarginPadding → сгенерированы .evo-{m|p}{t|r|b|l}-{1..5}, применены evo-mt-2, evo-pl-3');
+    }
 
-    this.cls.deleteClassMarginPadding();
-    this._createdCounter = 0;
+    /** deleteClassMarginPadding */
+    demoDeleteClassMarginPadding(): void {
+        this.cls.deleteClassMarginPadding();
+        this._log('deleteClassMarginPadding → <style data-dynamic-style> удалён');
+    }
 
-    this._log('🧹 Сброс: классы, стили, динамические элементы, dynamic-style');
-  }
+    /** removeClass */
+    demoRemoveClass(): void {
+        const ok = this.cls.removeClass(this.targetRef.nativeElement, 'demo-active');
+        this._log(`removeClass('demo-active') → ${ok}`);
+    }
 
-  /** Очистить лог */
-  clearLog(): void {
-    this.logHtml = [];
-  }
+    /** toggleClass */
+    demoToggleClass(): void {
+        this.cls.toggleClass(this.targetRef.nativeElement, 'demo-toggled');
+        this._log(`toggleClass('demo-toggled') → сейчас: ${this.cls.hasClass(this.targetRef.nativeElement, 'demo-toggled')}`);
+    }
 
-  /** Внутреннее логирование */
-  private _log(message: string): void {
-    const time = new Date().toLocaleTimeString();
+    /** toggleClass с force */
+    demoToggleForce(): void {
+        this.cls.toggleClass(this.targetRef.nativeElement, 'demo-forced', true);
+        this._log("toggleClass('demo-forced', true) → принудительно добавлен");
+    }
 
-    this.logHtml.unshift(`[${time}] ${message}`);
+    /** getClasses */
+    demoGetClasses(): void {
+        const list = this.cls.getClasses(this.targetRef.nativeElement);
+        this._log(`getClasses → [${list.join(', ')}]`);
+    }
 
-    if (this.logHtml.length > 200) { this.logHtml.length = 200; }
-      // eslint-disable-next-line no-console
-      console.log(message);
-  }
+    /** clearClasses */
+    demoClearClasses(): void {
+        this.cls.clearClasses(this.targetRef.nativeElement);
+        this._log('clearClasses → все классы удалены');
+    }
+
+    // ============================================================
+    // DOM STYLE — демонстрации
+    // ============================================================
+
+    /** applyStyleProperty */
+    demoApplyStyle(): void {
+        this.style.applyStyleProperty(this.targetRef.nativeElement, 'background-color', '#ffe08a');
+        this.style.applyStyleProperty(this.targetRef.nativeElement, 'border', '2px dashed #d97706');
+        this._log("applyStyleProperty → 'background-color', 'border'");
+    }
+
+    /** getStyle */
+    demoGetStyle(): void {
+        const bg = this.style.getStyle(this.targetRef.nativeElement, 'background-color');
+        this._log(`getStyle('background-color') → "${bg ?? 'null'}"`);
+    }
+
+    /** removeStyle */
+    demoRemoveStyle(): void {
+        this.style.removeStyle(this.targetRef.nativeElement, 'background-color');
+        this._log("removeStyle('background-color') → удалён");
+    }
+
+    // ============================================================
+    // Сброс / утилиты
+    // ============================================================
+
+    /** Полный сброс состояния песочницы */
+    resetAll(): void {
+        this.cls.clearClasses(this.targetRef.nativeElement);
+        this.targetRef.nativeElement.removeAttribute('style');
+
+        const host = this.dynamicHostRef.nativeElement;
+        while (host.firstChild) {
+            host.removeChild(host.firstChild);
+        }
+
+        this.cls.deleteClassMarginPadding();
+        this._createdCounter = 0;
+
+        this._log('🧹 Сброс: классы, стили, динамические элементы, dynamic-style');
+    }
+
+    /** Очистить лог */
+    clearLog(): void {
+        this.logHtml = [];
+    }
+
+    /** Внутреннее логирование */
+    private _log(message: string): void {
+        const time = new Date().toLocaleTimeString();
+
+        this.logHtml.unshift(`[${time}] ${message}`);
+
+        if (this.logHtml.length > 200) {
+            this.logHtml.length = 200;
+        }
+        // eslint-disable-next-line no-console
+        console.log(message);
+    }
 }

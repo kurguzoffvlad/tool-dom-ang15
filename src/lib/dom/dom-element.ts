@@ -1,7 +1,7 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Inject} from '@angular/core';
 
-import { TAllEvents, TSelector, TTypeAppend } from './dom.interface';
+import {TAllEvents, TSelector, TTypeAppend} from './dom.interface';
 
 
 /**
@@ -18,7 +18,8 @@ export class DomElement {
 
     private _countGetElement = 0;
 
-    constructor(@Inject(DOCUMENT) public document: Document) {}
+    constructor(@Inject(DOCUMENT) public document: Document) {
+    }
 
     /**
      * Создает новый DOM элемент с указанным тегом и CSS классом
@@ -213,7 +214,9 @@ export class DomElement {
     ): Promise<HTMLElement> {
         return this._setDelay(time)
             .then(_ => {
-                if (!node) { return null; }
+                if (!node) {
+                    return null;
+                }
                 // Используем type assertion для вызова метода
                 const result = (node as any)[selector](identifier);
                 return result || null;
