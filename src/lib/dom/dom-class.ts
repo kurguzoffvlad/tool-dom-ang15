@@ -67,7 +67,7 @@ export class DomClass {
      * Создает CSS-классы для margin и padding на основе переменных --evo{n}.
      * Классы генерируются для всех направлений (top, right, bottom, left).
      *
-     * @param elementRef - Элемент для которого будут создаваться классы".
+     * @param elementRef - Элемент для которого будут создаваться классы.
      * @param {number[]} arrVars - Значения для генерации классов.
      *
      */

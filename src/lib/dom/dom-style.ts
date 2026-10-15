@@ -44,7 +44,7 @@ export class DomStyle {
      *
      * !!! очень осторожно так как метод стирает старое и присваивает значение для cssText
      *
-     * @param {HTMLElement} element - лемент
+     * @param {HTMLElement} element - элемент
      * @param stringStyles - строка со стилями
      *
      * @example
