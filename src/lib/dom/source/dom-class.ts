@@ -6,12 +6,12 @@ import {DomElement} from "./dom-element";
  * Класс для работы с классами DOM
  */
 export class DomClass {
-    public dom: DomElement;
+    public elt: DomElement;
 
     constructor(
         @Inject(DOCUMENT) public document: Document,
     ) {
-        this.dom = new DomElement(this.document)
+        this.elt = new DomElement(this.document)
     }
 
     //region Управление классами
@@ -72,7 +72,7 @@ export class DomClass {
      *
      */
     addClassMarginPadding(elementRef: ElementRef<HTMLElement>, arrVars: number[] = []): void {
-        const root = this.dom.elementGetParent(elementRef.nativeElement);
+        const root = this.elt.elementGetParent(elementRef.nativeElement);
 
         if (!root) {
             console.error('Root element not found');

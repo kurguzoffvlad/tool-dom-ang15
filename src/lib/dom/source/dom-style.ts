@@ -48,10 +48,10 @@ export class DomStyle {
      * @param stringStyles - строка со стилями
      *
      * @example
-     * const root = document.documentElement as any;
+     * const source = document.documentElement as any;
      * const styles = `--big-page-width:${width}; --z-index: ${zIndex}`;
      *
-     * this.setStylesString(root, styles);
+     * this.setStylesString(source, styles);
      */
     // public setStylesString(element: HTMLElement | null, stringStyles: string | null): void {
     //     if (!element || !stringStyles) return;

@@ -52,9 +52,11 @@ tool-dom-ang15/
 ├── tool-dom-ang15.component.html   # шаблон (панели + лог)
 ├── tool-dom-ang15.component.scss   # стили
 └── dom/
-    ├── dom-element.ts              # сервис DomElement
-    ├── dom-class.ts                # сервис DomClass
-    └── dom-style.ts                # сервис DomStyle
+    ├── dom-tools.ts               # сервис DomToolsService
+    ├── root
+        ├── dom-element.ts              # сервис DomElement
+        ├── dom-class.ts                # сервис DomClass
+        └── dom-style.ts                # сервис DomStyle
 ```
 
 ---
@@ -95,7 +97,7 @@ tool-dom-ang15/
 **Инициализация (`ngOnInit`):**
 
 ```ts
-this.dom   = new DomElement(this.document);
+this.elt   = new DomElement(this.document);
 this.cls   = new DomClass(this.document);
 this.style = new DomStyle();
 ```
