@@ -244,20 +244,20 @@ export class ToolDomAng15Component implements OnInit, AfterViewInit {
 
     /** applyStyleProperty */
     demoApplyStyle(): void {
-        this.dom.style.applyStyleProperty(this.targetRef.nativeElement, 'background-color', '#ffe08a');
-        this.dom.style.applyStyleProperty(this.targetRef.nativeElement, 'border', '2px dashed #d97706');
+        this.dom.stl.applyStyleProperty(this.targetRef.nativeElement, 'background-color', '#ffe08a');
+        this.dom.stl.applyStyleProperty(this.targetRef.nativeElement, 'border', '2px dashed #d97706');
         this._log("applyStyleProperty → 'background-color', 'border'");
     }
 
     /** getStyle */
     demoGetStyle(): void {
-        const bg = this.dom.style.getStyle(this.targetRef.nativeElement, 'background-color');
+        const bg = this.dom.stl.getStyle(this.targetRef.nativeElement, 'background-color');
         this._log(`getStyle('background-color') → "${bg ?? 'null'}"`);
     }
 
     /** removeStyle */
     demoRemoveStyle(): void {
-        this.dom.style.removeStyle(this.targetRef.nativeElement, 'background-color');
+        this.dom.stl.removeStyle(this.targetRef.nativeElement, 'background-color');
         this._log("removeStyle('background-color') → удалён");
     }
 

@@ -8,14 +8,14 @@ import { DomStyle } from './source/dom-style';
 export interface DomTools {
     elt: DomElement;
     cls: DomClass;
-    style: DomStyle;
+    stl: DomStyle;
 }
 
 export function createDomTools(document: Document): DomTools {
     return {
         elt: new DomElement(document),
         cls: new DomClass(document),
-        style: new DomStyle(),
+        stl: new DomStyle(),
     };
 }
 
@@ -23,12 +23,12 @@ export function createDomTools(document: Document): DomTools {
 export class DomToolsService {
     readonly elt: DomElement;
     readonly cls: DomClass;
-    readonly style: DomStyle;
+    readonly stl: DomStyle;
 
     constructor(@Inject(DOCUMENT) document: Document) {
         const t = createDomTools(document);
         this.elt = t.elt;
         this.cls = t.cls;
-        this.style = t.style;
+        this.stl = t.stl;
     }
 }
