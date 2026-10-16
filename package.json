@@ -1,6 +1,6 @@
 {
   "name": "tool-dom-ang15",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Библиотека для работы с DOM",
   "author": "Vladimir Kurguzov <kurguzov74@gmail.com>",
   "peerDependencies": {
