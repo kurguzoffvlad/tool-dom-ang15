@@ -2,9 +2,6 @@
  * Public API Surface of tool-dom-ang15
  */
 
-// Модуль (если он нужен потребителям)
-export * from './lib/tool-dom-ang15.module';
-
 // Сервис-агрегатор и фабрика
 export * from './lib/dom-tools';
 
