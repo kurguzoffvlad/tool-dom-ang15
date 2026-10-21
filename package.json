@@ -1,14 +1,14 @@
 {
-  "name": "tool-dom-ang15",
-  "version": "0.0.13",
-  "description": "Библиотека для работы с DOM",
-  "author": "Vladimir Kurguzov <kurguzov74@gmail.com>",
-  "peerDependencies": {
-    "@angular/common": "^15.2.0",
-    "@angular/core": "^15.2.0"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+	"name": "tool-dom-ang15",
+	"version": "0.0.15",
+	"description": "Библиотека для работы с DOM",
+	"author": "Vladimir Kurguzov <kurguzov74@gmail.com>",
+	"peerDependencies": {
+		"@angular/common": "^15.2.0",
+		"@angular/core": "^15.2.0"
+	},
+	"dependencies": {
+		"tslib": "^2.3.0"
+	},
+	"sideEffects": false
 }
