@@ -2,8 +2,16 @@
  * Public API Surface of tool-dom-ang15
  */
 
-export * from './lib/tool-dom-ang15.component';
+// Модуль (если он нужен потребителям)
 export * from './lib/tool-dom-ang15.module';
 
-// 👇 добавляем экспорт DOM-утилит
-export * from './lib/dom/dom-tools';
+// Сервис-агрегатор и фабрика
+export * from './lib/dom-tools';
+
+// Отдельные сервисы
+export * from './lib/dom-element';
+export * from './lib/dom-class';
+export * from './lib/dom-style';
+
+// Типы и интерфейсы
+export * from './lib/dom.interface';

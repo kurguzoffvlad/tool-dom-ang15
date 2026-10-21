@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
 
-import { DomClass } from './source/dom-class';
-import { DomElement } from './source/dom-element';
-import { DomStyle } from './source/dom-style';
+import { DomClass } from './dom-class';
+import { DomElement } from './dom-element';
+import { DomStyle } from './dom-style';
 
 export interface DomTools {
     elt: DomElement;
