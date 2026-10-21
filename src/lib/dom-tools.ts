@@ -1,9 +1,9 @@
-import {Inject, Injectable} from '@angular/core';
-import {DOCUMENT} from '@angular/common'
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common'
 
-import {DomClass} from './dom-class';
-import {DomElement} from './dom-element';
-import {DomStyle} from './dom-style';
+import { DomClass } from './dom-class';
+import { DomElement } from './dom-element';
+import { DomStyle } from './dom-style';
 
 export interface DomTools {
 	elt: DomElement;
@@ -19,7 +19,7 @@ export function createDomTools(document: Document): DomTools {
 	};
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DomToolsService {
 	readonly elt: DomElement;
 	readonly cls: DomClass;

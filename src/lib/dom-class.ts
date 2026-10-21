@@ -1,6 +1,6 @@
-import {ElementRef, Inject} from '@angular/core';
-import {DOCUMENT} from "@angular/common";
-import {DomElement} from "./dom-element";
+import { ElementRef, Inject } from '@angular/core';
+import { DOCUMENT } from "@angular/common";
+import { DomElement } from "./dom-element";
 
 /**
  * Класс для работы с классами DOM

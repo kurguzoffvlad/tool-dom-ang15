@@ -1,7 +1,7 @@
-import {DOCUMENT} from '@angular/common';
-import {Inject} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject } from '@angular/core';
 
-import {TAllEvents, TSelector, TTypeAppend} from './dom.interface';
+import { TAllEvents, TSelector, TTypeAppend } from './dom.interface';
 
 
 /**
@@ -213,7 +213,7 @@ export class DomElement {
 		time: number
 	): Promise<HTMLElement> {
 		return this._setDelay(time)
-			.then(_ => {
+			.then(() => {
 				if (!node) {
 					return null;
 				}
