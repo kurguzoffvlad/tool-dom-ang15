@@ -1,5 +1,7 @@
 # DOM Playground (`lib-tool-dom-ang15`)
 
+## Использование в https://github.com/kurguzoffvlad/tool-libs-ang15
+
 Демонстрационный Angular-компонент, показывающий работу трёх сервисов для манипуляции DOM:
 
 - **`DomElement`** — создание, вставка, удаление и поиск элементов;
